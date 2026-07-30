@@ -6,11 +6,10 @@ export type Attribute = {
 };
 
 type HasScores = {
-
-    strengthScore: StrengthScore,
-    verificationScore: VerificationScore,
-    identityFraudScore: IdentityFraudScore,
-    activityHistoryScore: ActivityHistoryScore,
+    strengthScore: StrengthScore | null,
+    verificationScore: VerificationScore | null,
+    identityFraudScore: IdentityFraudScore | null,
+    activityHistoryScore: ActivityHistoryScore | null,
 }
 
 export type Claim = {
@@ -45,6 +44,16 @@ export type UserRequirement =
     | "Credit History"
     | "Benefits History"
     | "Smart Phone"
-    | { and: UserRequirement[]}
-    | { or: UserRequirement[]}
+    | { and: UserRequirement[] }
+    | { or: UserRequirement[] }
     ;
+
+export const scoreCount = (hasScores: HasScores): number => {
+    return [
+        hasScores.strengthScore != null,
+        hasScores.verificationScore != null,
+        hasScores.identityFraudScore != null,
+        hasScores.activityHistoryScore != null,
+    ].filter((hasScore) => hasScore)
+        .length
+}
