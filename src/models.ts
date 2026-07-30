@@ -57,3 +57,9 @@ export const scoreCount = (hasScores: HasScores): number => {
     ].filter((hasScore) => hasScore)
         .length
 }
+
+
+export const hasStrengthScore = (hasScores: HasScores): boolean => hasScores.strengthScore != null;
+export const hasVerificationScore = (hasScores: HasScores): boolean => hasScores.verificationScore != null;
+export const hasIdentityFraudScore = (hasScores: HasScores): boolean => hasScores.identityFraudScore != null;
+export const hasActivityHistoryScore = (hasScores: HasScores): boolean => hasScores.activityHistoryScore != null;
