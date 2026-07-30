@@ -1,65 +1,56 @@
 import {Result} from "typescript-result";
 
+// --- Verification Score ---
+
 export type VerificationScore = 0 | 1 | 2 | 3 | 4;
+export const allVerificationScores: VerificationScore[] = [0, 1, 2, 3, 4]
 
-export const toVerificationScore = (num: number): Result<VerificationScore, string> => {
-    switch (num) {
-        case 0: return Result.ok(0);
-        case 1: return Result.ok(1);
-        case 2: return Result.ok(2);
-        case 3: return Result.ok(3);
-        case 4: return Result.ok(4);
-        default: return Result.error("Invalid score, must be 0, 1, 2, 3, or 4")
-    }
-}
+export const isVerificationScore = (score: unknown): score is VerificationScore =>
+    allVerificationScores.includes(score as any)
 
-export type StrengthScore = 0 | 1 | 2 | 3 | 4
+export const toVerificationScore = (num: number): Result<VerificationScore, string> =>
+    isVerificationScore(num) ? Result.ok(num) : Result.error(`Invalid score, must be one of: ${allVerificationScores.join(", ")}`);
 
-export const toStrengthScore = (num: number): Result<StrengthScore, string> => {
-    switch (num) {
-        case 0: return Result.ok(0);
-        case 1: return Result.ok(1);
-        case 2: return Result.ok(2);
-        case 3: return Result.ok(3);
-        case 4: return Result.ok(4);
-        default: return Result.error("Invalid score, must be 0, 1, 2, 3, or 4")
-    }
-}
+// --- Strength Score ---
+
+export type StrengthScore = 0 | 1 | 2 | 3 | 4;
+export const allStrengthScores: StrengthScore[] = [0, 1, 2, 3, 4]
+
+export const isStrengthScore = (score: unknown): score is StrengthScore =>
+    allStrengthScores.includes(score as any)
+
+export const toStrengthScore = (num: number): Result<StrengthScore, string> =>
+    isStrengthScore(num) ? Result.ok(num) : Result.error(`Invalid score, must be one of: ${allStrengthScores.join(", ")}`);
+
+// --- Validity Score ---
 
 export type ValidityScore = 0 | 1 | 2 | 3 | 4
+const allValidityScores: ValidityScore[] = [0, 1, 2, 3, 4]
 
-export const toValidityScore = (num: number): Result<ValidityScore, string> => {
-    switch (num) {
-        case 0: return Result.ok(0);
-        case 1: return Result.ok(1);
-        case 2: return Result.ok(2);
-        case 3: return Result.ok(3);
-        case 4: return Result.ok(4);
-        default: return Result.error("Invalid score, must be 0, 1, 2, 3, or 4")
-    }
-}
+export const isValidityScore = (score: unknown): score is ValidityScore =>
+    allValidityScores.includes(score as any)
+
+export const toValidityScore = (num: number): Result<ValidityScore, string> =>
+    isValidityScore(num) ? Result.ok(num) : Result.error(`Invalid score, must be one of: ${allValidityScores.join(", ")}`);
+
+// --- Activity History Score ---
 
 export type ActivityHistoryScore = 0 | 1 | 2 | 3 | 4
+const allActivityHistoryScores: ActivityHistoryScore[] = [0, 1, 2, 3, 4]
 
-export const toActivityHistoryScore = (num: number): Result<ActivityHistoryScore, string> => {
-    switch (num) {
-        case 0: return Result.ok(0);
-        case 1: return Result.ok(1);
-        case 2: return Result.ok(2);
-        case 3: return Result.ok(3);
-        case 4: return Result.ok(4);
-        default: return Result.error("Invalid score, must be 0, 1, 2, 3, or 4")
-    }
-}
+export const isActivityHistoryScore = (score: unknown): score is ActivityHistoryScore =>
+    allActivityHistoryScores.includes(score as any)
+
+export const toActivityHistoryScore = (num: number): Result<ActivityHistoryScore, string> =>
+    isActivityHistoryScore(num) ? Result.ok(num) : Result.error(`Invalid score, must be one of: ${allActivityHistoryScores.join(", ")}`);
+
+// --- Identity Fraud Score ---
 
 export type IdentityFraudScore = 0 | 1 | 2 | 3
+const allIdentityFraudScores: IdentityFraudScore[] = [0, 1, 2, 3]
 
-export const toIdentityFraudScore = (num: number): Result<IdentityFraudScore, string> => {
-    switch (num) {
-        case 0: return Result.ok(0);
-        case 1: return Result.ok(1);
-        case 2: return Result.ok(2);
-        case 3: return Result.ok(3);
-        default: return Result.error("Invalid score, must be 0, 1, 2, or 3")
-    }
-}
+export const isIdentityFraudScore = (score: unknown): score is IdentityFraudScore =>
+    allIdentityFraudScores.includes(score as any)
+
+export const toIdentityFraudScore = (num: number): Result<IdentityFraudScore, string> =>
+    isIdentityFraudScore(num) ? Result.ok(num) : Result.error(`Invalid score, must be one of: ${allIdentityFraudScores.join(", ")}`);
