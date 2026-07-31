@@ -1,4 +1,14 @@
-import type {ActivityHistoryScore, IdentityFraudScore, StrengthScore, VerificationScore} from "./scores.ts";
+import {
+    type ActivityHistoryScore,
+    allActivityHistoryScores,
+    allIdentityFraudScores,
+    allStrengthScores,
+    allValidityScores,
+    allVerificationScores,
+    type IdentityFraudScore,
+    type StrengthScore, type ValidityScore,
+    type VerificationScore
+} from "./scores.ts";
 import {randomArray, randomInteger, randomNumber, randomString} from "./test-utils/random.ts";
 
 export type Attribute = {
@@ -14,16 +24,18 @@ export const createTestAttribute = (attribute: Partial<Attribute> = {}): Attribu
 
 type HasScores = {
     strengthScore: StrengthScore | null,
-    verificationScore: VerificationScore | null,
+    validityScore: ValidityScore | null,
     identityFraudScore: IdentityFraudScore | null,
     activityHistoryScore: ActivityHistoryScore | null,
+    verificationScore: VerificationScore | null,
 }
 
 export const createTestHasScores = (hasScores: Partial<HasScores> = {}): HasScores => ({
-    strengthScore: null,
-    verificationScore: null,
-    identityFraudScore: null,
-    activityHistoryScore: null,
+    strengthScore: [null, allStrengthScores[randomInteger(4)]][randomInteger(1)],
+    validityScore: [null, allValidityScores[randomInteger(4)]][randomInteger(1)],
+    identityFraudScore: [null, allIdentityFraudScores[randomInteger(4)]][randomInteger(1)],
+    activityHistoryScore: [null, allActivityHistoryScores[randomInteger(4)]][randomInteger(1)],
+    verificationScore: [null, allVerificationScores[randomInteger(4)]][randomInteger(1)],
     ...hasScores,
 });
 
@@ -105,15 +117,24 @@ export const createTestCriModel = (criModel: Partial<CriModel> = {}) => ({
 export const scoreCount = (hasScores: HasScores): number => {
     return [
         hasScores.strengthScore != null,
-        hasScores.verificationScore != null,
+        hasScores.validityScore != null,
         hasScores.identityFraudScore != null,
         hasScores.activityHistoryScore != null,
+        hasScores.verificationScore != null,
     ].filter((hasScore) => hasScore)
         .length
 }
 
 
 export const hasStrengthScore = (hasScores: HasScores): boolean => hasScores.strengthScore != null;
-export const hasVerificationScore = (hasScores: HasScores): boolean => hasScores.verificationScore != null;
+export const hasValidityScore = (hasScores: HasScores): boolean => hasScores.validityScore != null;
 export const hasIdentityFraudScore = (hasScores: HasScores): boolean => hasScores.identityFraudScore != null;
 export const hasActivityHistoryScore = (hasScores: HasScores): boolean => hasScores.activityHistoryScore != null;
+export const hasVerificationScore = (hasScores: HasScores): boolean => hasScores.verificationScore != null;
+export const hasScore = (hasScores: HasScores): boolean => (
+    hasStrengthScore(hasScores) ||
+    hasValidityScore(hasScores) ||
+    hasIdentityFraudScore(hasScores) ||
+    hasActivityHistoryScore(hasScores) ||
+    hasVerificationScore(hasScores)
+);
