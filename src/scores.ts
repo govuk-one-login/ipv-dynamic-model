@@ -2,8 +2,8 @@ import {Result} from "typescript-result";
 
 // --- Verification Score ---
 
-export type VerificationScore = 0 | 1 | 2 | 3 | 4;
-export const allVerificationScores: VerificationScore[] = [0, 1, 2, 3, 4]
+export type VerificationScore = 1 | 2 | 3 | 4;
+export const allVerificationScores: VerificationScore[] = [1, 2, 3, 4]
 
 export const isVerificationScore = (score: unknown): score is VerificationScore =>
     allVerificationScores.includes(score as any)
@@ -13,8 +13,8 @@ export const toVerificationScore = (num: number): Result<VerificationScore, stri
 
 // --- Strength Score ---
 
-export type StrengthScore = 0 | 1 | 2 | 3 | 4;
-export const allStrengthScores: StrengthScore[] = [0, 1, 2, 3, 4]
+export type StrengthScore = 1 | 2 | 3 | 4;
+export const allStrengthScores: StrengthScore[] = [1, 2, 3, 4]
 
 export const isStrengthScore = (score: unknown): score is StrengthScore =>
     allStrengthScores.includes(score as any)
@@ -24,8 +24,8 @@ export const toStrengthScore = (num: number): Result<StrengthScore, string> =>
 
 // --- Validity Score ---
 
-export type ValidityScore = 0 | 1 | 2 | 3 | 4
-const allValidityScores: ValidityScore[] = [0, 1, 2, 3, 4]
+export type ValidityScore = 1 | 2 | 3 | 4
+export const allValidityScores: ValidityScore[] = [1, 2, 3, 4]
 
 export const isValidityScore = (score: unknown): score is ValidityScore =>
     allValidityScores.includes(score as any)
@@ -35,8 +35,8 @@ export const toValidityScore = (num: number): Result<ValidityScore, string> =>
 
 // --- Activity History Score ---
 
-export type ActivityHistoryScore = 0 | 1 | 2 | 3 | 4
-const allActivityHistoryScores: ActivityHistoryScore[] = [0, 1, 2, 3, 4]
+export type ActivityHistoryScore = 1 | 2 | 3 | 4
+export const allActivityHistoryScores: ActivityHistoryScore[] = [1, 2, 3, 4]
 
 export const isActivityHistoryScore = (score: unknown): score is ActivityHistoryScore =>
     allActivityHistoryScores.includes(score as any)
@@ -47,7 +47,7 @@ export const toActivityHistoryScore = (num: number): Result<ActivityHistoryScore
 // --- Identity Fraud Score ---
 
 export type IdentityFraudScore = 0 | 1 | 2 | 3
-const allIdentityFraudScores: IdentityFraudScore[] = [0, 1, 2, 3]
+export const allIdentityFraudScores: IdentityFraudScore[] = [0, 1, 2, 3]
 
 export const isIdentityFraudScore = (score: unknown): score is IdentityFraudScore =>
     allIdentityFraudScores.includes(score as any)
