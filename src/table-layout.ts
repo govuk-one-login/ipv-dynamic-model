@@ -9,68 +9,84 @@
 // The grid effectively is an array of objects representing a single column
 
 
+
+
 import {
     type CriModel,
     hasActivityHistoryScore,
-    hasIdentityFraudScore,
-    hasStrengthScore,
+    hasIdentityFraudScore, hasScore,
+    hasStrengthScore, hasValidityScore,
     hasVerificationScore, scoreCount
 } from "./models.ts";
 
 type ScoreType =
     | "strength"
-    | "verification"
+    | "validity"
     | "identityFraud"
     | "activityHistory"
+    | "verification"
     ;
+
+type Row = ScoreType | "other";
 
 const hasScoreType = (cri: CriModel, scoreType: ScoreType): boolean => {
     switch (scoreType) {
         case "strength":
             return hasStrengthScore(cri);
-        case "verification":
-            return hasVerificationScore(cri);
+        case "validity":
+            return hasValidityScore(cri);
         case "identityFraud":
             return hasIdentityFraudScore(cri);
         case "activityHistory":
             return hasActivityHistoryScore(cri);
+        case "verification":
+            return hasVerificationScore(cri);
     }
 }
 
 // todo: pretty sure there's a way to say exactly one of each
 const scoringOrder: ScoreType[] = [
     "strength",
-    "verification",
+    "validity",
     "identityFraud",
     "activityHistory",
+    "verification",
 ];
 
 class Column {
     strength: CriModel | null = null;
-    verification: CriModel | null = null;
+    validity: CriModel | null = null;
     identityFraud: CriModel | null = null;
     activityHistory: CriModel | null = null;
+    verification: CriModel | null = null;
+    other: CriModel | null = null;
 
     containsCri(cri: CriModel): boolean {
         return scoringOrder.some((scoringType) => this[scoringType] === cri);
     }
 
-    isScoreTypeFilled(scoreType: ScoreType): boolean {
-        return this[scoreType] !== null;
+    isRowFilled(row: Row): boolean {
+        return this[row] !== null;
     }
 
     addCri(cri: CriModel) {
         if (hasStrengthScore(cri)) {
             this.strength = cri;
         }
-        if (hasVerificationScore(cri)) {
-            this.verification = cri;
+        if(hasValidityScore(cri)) {
+            this.validity = cri;
         }
         if (hasIdentityFraudScore(cri)) {
             this.identityFraud = cri;
         }
         if (hasActivityHistoryScore(cri)) {
             this.activityHistory = cri;
+        }
+        if (hasVerificationScore(cri)) {
+            this.verification = cri;
+        }
+        if (!hasScore(cri)) {
+            this.other = cri;
         }
     }
 }
@@ -91,6 +107,11 @@ export class Table {
                 });
         }
 
+        // Add remaining CRIs that don't have a score
+        cris.filter((cri) => !this.containsCri(cri)).forEach((cri) => {
+            this.getFirstAvailableColumn("other").addCri(cri);
+        })
+
     }
 
     // Checks if the table already contains a CRI
@@ -100,9 +121,9 @@ export class Table {
 
     // Returns the first available column for a scoreType
     // Note: This only works if you go through the scoreTypes in order as you don't need to know what scoreType
-    protected getFirstAvailableColumn(scoreType: ScoreType): Column {
+    protected getFirstAvailableColumn(row: Row): Column {
         // Find the first available column
-        const foundColumn = this.columns.find((column) => !column.isScoreTypeFilled(scoreType));
+        const foundColumn = this.columns.find((column) => !column.isRowFilled(row));
         if (foundColumn) {
             return foundColumn;
         }
